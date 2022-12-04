@@ -4,11 +4,21 @@ import React, { useState } from "react";
 const CreateTodo = () => {
 
   // storing and updating title and tasks
-  const [todoTitle, setTodoTitle] = useState("")
-  const [todoTask, setTodoTask] = useState("")
+  const [todoTitle, setTodoTitle] = useState(undefined)
+  const [todoTask, setTodoTask] = useState(undefined)
+  // for toggling the createTodo component on and off
+  const [modal, setModal] = useState(true)
+
+  // function for setting modal
+   const toggleModal = () =>{
+    setModal(!modal);
+  }
 
   // function htmlFor creating todos
   const createTodo = async () =>{
+    if(!todoTitle){
+      return alert("Please Enter Title")
+    }
     const todo = {
       title: todoTitle, 
       task: todoTask
@@ -24,14 +34,15 @@ const CreateTodo = () => {
   const handleSubmit = (e) =>{
     e.preventDefault();
     createTodo();
-    setTodoTitle("")
-    setTodoTask("")
+    setTodoTitle(undefined)
+    setTodoTask(undefined)
   }
 
   return (
     <div>
       {/* <!-- Main modal --> */}
-      <div
+       {modal && 
+       (<div
         id="defaultModal"
         tabIndex="-1"
         aria-hidden="true"
@@ -46,6 +57,7 @@ const CreateTodo = () => {
                 Add Your Todo
               </h3>
               <button
+                onClick={toggleModal}
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
@@ -125,7 +137,7 @@ const CreateTodo = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };
