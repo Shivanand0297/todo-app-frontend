@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Header = () => {
   const { user, setUser } = useContext(UserContext);
+  const hiddenNavbar = useRef()
 
   const handleToggle = () =>{
-    const hiddenNavbar = document.getElementById("navbar-default")
-    const hidden = hiddenNavbar.classList.contains("hidden") //return true if it contains hidden class
+    const hidden = hiddenNavbar.current.classList.contains("hidden") //return true if it contains hidden class
   
     if(hidden){
-      hiddenNavbar.classList.remove("hidden")
-      hiddenNavbar.classList.add("block")
+      hiddenNavbar.current.classList.remove("hidden")
+      hiddenNavbar.current.classList.add("block")
     }else{
-      hiddenNavbar.classList.remove("block")
-      hiddenNavbar.classList.add("hidden")
+      hiddenNavbar.current.classList.remove("block")
+      hiddenNavbar.current.classList.add("hidden")
     }
   }
 
@@ -55,13 +55,16 @@ const Header = () => {
             ></path>
           </svg>
         </button>
-        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        <div className="hidden w-full md:block md:w-auto" id="navbar-default" ref={hiddenNavbar}>
+          <ul className="flex flex-col p-1 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             {user ? (
               <li>
                 <button
                   className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  onClick={()=>{setUser(null)}}
+                  onClick={()=>{
+                    setUser(null)
+                    window.location.reload()
+                  }}
                 >
                   Logout
                 </button>
