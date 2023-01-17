@@ -11,20 +11,26 @@ const SignIn = () => {
 
   const {user, setUser} = useContext(UserContext)
   const navigate = useNavigate()
+  console.log(useContext(UserContext));
 
   const setData = async () =>{
 
       try {
-        const userData = {
+          const userData = {
           email: email,
           password: password
         }
     
         const {data} = await axios.post("http://127.0.0.1:4000/api/login", userData)
+        console.log("data:" , data);
         const loggedInEmail = data.user?.email
-        setUser(loggedInEmail) //FIXME:
-        // console.log("userid",user);
-        toast("Signin Successfully", {
+        const userId = data.user?._id
+
+        setUser({
+          ...user, email: loggedInEmail, id: userId
+        }) //FIXME:
+
+        toast(data.message, {
           type: "success",
           position: "bottom-center"
         })

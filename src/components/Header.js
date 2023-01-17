@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,6 +17,21 @@ const Header = () => {
     }else{
       hiddenNavbar.current.classList.remove("block")
       hiddenNavbar.current.classList.add("hidden")
+    }
+  }
+
+  const handleLogout = async () =>{
+    try {
+      setUser(null)
+      const {data} = await axios.get(`http://127.0.0.1:4000/api/logout`)
+      console.log(data);
+      toast(data, {
+        type: "success",
+        position: "bottom-center"
+      })
+      
+    } catch (error) {
+      
     }
   }
 
@@ -62,17 +78,7 @@ const Header = () => {
               <li>
                 <button
                   className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  onClick={()=>{
-                    setUser(null)
-                    toast(`${user} Logout Successfully`, {
-                      type: "success",
-                      position: "bottom-center"
-                    })
-                    // to wait for the animation
-                    setTimeout(()=>{
-                      window.location.reload()
-                    }, 2000)
-                  }}
+                  onClick={handleLogout}
                 >
                   Logout
                 </button>

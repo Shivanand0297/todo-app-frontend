@@ -16,7 +16,8 @@ import PageNotFound from "./pages/PageNotFound"
 
 const App = () => {
 
-  const [user, setUser] = useState(null)  // to store the logged in user
+  const [user, setUser] = useState([])  // to store the logged in user
+  // const [user, setUser] = useState()  // to store the logged in user
 
   return (
     <BrowserRouter>
