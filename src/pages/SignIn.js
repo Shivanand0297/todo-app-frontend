@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { UserContext } from '../context/UserContext'
 
 const SignIn = () => {
@@ -23,8 +24,16 @@ const SignIn = () => {
         const loggedInEmail = data.user?.email
         setUser(loggedInEmail) //FIXME:
         // console.log("userid",user);
+        toast("Signin Successfully", {
+          type: "success",
+          position: "bottom-center"
+        })
       } catch (error) {
         console.log(error.message);
+        toast(`Failed to signin: ${error.message}`, {
+          type: "error",
+          position: "bottom-center"
+        })
       }
     
   }

@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Header from './components/Header'
 import {BrowserRouter ,Routes, Route} from "react-router-dom"
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
+
 // import CreateTodo from './components/CreateTodo'
 // import CreateTodoForm from './components/CreateTodoForm'
 // import TodosList from './components/TodosList'
@@ -27,6 +30,7 @@ const App = () => {
       </Routes>
       {/* <CreateTodoForm/>
       <TodosList/> */}
+      <ToastContainer/>
     </UserContext.Provider>
     </BrowserRouter>
   )

@@ -22,7 +22,7 @@ const CreateTodoForm = () => {
     // sending data to backend with the help of axios
     // "proxy": "http://127.0.0.1:4000",
 
-    const res = await axios.post("/createTodo", todo)
+    const res = await axios.post("http://127.0.0.1:4000/api/createTodo", todo)
     console.log(res);
   }
 
