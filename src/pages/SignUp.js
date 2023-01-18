@@ -26,9 +26,12 @@ const SignUp = () => {
     
         const {data} = await axios.post("http://127.0.0.1:4000/api/register", userData)
         const loggedInEmail = data.user?.email
-        setUser(loggedInEmail) //FIXME:
+        const userId = data.user?._id
+        setUser({
+          ...user, email: loggedInEmail, id: userId
+        }) //FIXME:
         // console.log("userid",user);
-        toast("Signup Successfully", {
+        toast(data.message, {
           type: "success",
           position: "bottom-center"
         })

@@ -25,13 +25,13 @@ const Header = () => {
       setUser(null)
       const {data} = await axios.get(`http://127.0.0.1:4000/api/logout`)
       console.log(data);
-      toast(data, {
+      toast(data.message, {
         type: "success",
         position: "bottom-center"
       })
       
     } catch (error) {
-      
+      console.log(error.message);
     }
   }
 
@@ -45,7 +45,7 @@ const Header = () => {
             alt="GitHub Search"
           />
           <span className="mx-3 text-xs sm:text-sm text-white ">
-            {user ? user : ""}{" "}
+            {user ? user.email : ""}{" "}
             {/*TODO: conditional rendring */}
           </span>
         </Link>
