@@ -9,42 +9,50 @@ const SignIn = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const {user, setUser} = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const navigate = useNavigate()
   console.log(useContext(UserContext));
 
-  const setData = async () =>{
+  const setData = async () => {
 
-      try {
-          const userData = {
-          email: email,
-          password: password
-        }
-    
-        const {data} = await axios.post("http://127.0.0.1:4000/api/login", userData)
-        console.log("data:" , data);
-        const loggedInEmail = data.user?.email
-        const userId = data.user?._id
-
+    try {
+      const userData = {
+        email: email,
+        password: password
+      }
+      console.log(email)
+      const response = await axios.post("http://127.0.0.1:4000/api/login", userData)
+      const data = await response.data
+      const loggedInEmail = data.user.email
+      const userId = data.user._id
+      if (data.success) {
         setUser({
           ...user, email: loggedInEmail, id: userId
-        }) //FIXME:
-
+        })
         toast(data.message, {
           type: "success",
           position: "bottom-center"
         })
-      } catch (error) {
-        console.log(error.message);
-        toast(`Failed to signin: ${error.message}`, {
+        setTimeout(() => {
+          return navigate('/')
+        }, 1000)
+      } else {
+        toast(data.message, {
           type: "error",
           position: "bottom-center"
         })
       }
-    
+    } catch (error) {
+      console.log(error.message);
+      toast(`Failed to signin: ${error.message}`, {
+        type: "error",
+        position: "bottom-center"
+      })
+    }
+
   }
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault()
     setData()
     setEmail("")
@@ -53,7 +61,7 @@ const SignIn = () => {
 
 
   // putting behind login screen
-  if(user){
+  if (user) {
     return navigate("/")
   }
 
@@ -110,7 +118,7 @@ const SignIn = () => {
                     placeholder="name@company.com"
                     required
                     value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </div>
                 <div>
@@ -128,7 +136,7 @@ const SignIn = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                     required
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </div>
                 <button

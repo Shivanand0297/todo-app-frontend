@@ -11,53 +11,56 @@ const SignUp = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const {user, setUser} = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
-  const setData = async () =>{
+  const setData = async () => {
 
-      try {
-        const userData = {
-          firstname: firstName,
-          lastname: lastName,
-          email: email,
-          password: password
-        }
-    
-        const {data} = await axios.post("http://127.0.0.1:4000/api/register", userData)
-        const loggedInEmail = data.user?.email
-        const userId = data.user?._id
+    try {
+      const userData = {
+        firstname: firstName,
+        lastname: lastName,
+        email: email,
+        password: password
+      }
+      const response = await axios.post("http://127.0.0.1:4000/api/register", userData)
+      const data = await response.data
+      const loggedInEmail = data.user.email
+      const userId = data.user._id
+      if (data.success) {
         setUser({
           ...user, email: loggedInEmail, id: userId
-        }) //FIXME:
-        // console.log("userid",user);
+        })
         toast(data.message, {
           type: "success",
           position: "bottom-center"
         })
-      } catch (error) {
-        console.log(error.message);
-        toast(`Failed to signup: ${error.message}`, {
+        setTimeout(() => {
+          return navigate('/signin')
+        }, 1000)
+      } else {
+        toast(data.message, {
           type: "error",
           position: "bottom-center"
         })
       }
-    
+    } catch (error) {
+      console.log(error.message);
+      toast(`Failed to signup: ${error.message}`, {
+        type: "error",
+        position: "bottom-center"
+      })
+    }
+
   }
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault()
     setData()
     setFirstName("")
     setLastName("")
     setEmail("")
     setPassword("")
-  }
-
-
-  // putting behind login screen
-  if(user){
-    return navigate("/signin")
   }
 
   return (
@@ -113,7 +116,7 @@ const SignUp = () => {
                     placeholder="Firstname"
                     required
                     value={firstName}
-                    onChange={e=>setFirstName(e.target.value)}
+                    onChange={e => setFirstName(e.target.value)}
                   />
                 </div>
                 <div>
@@ -131,7 +134,7 @@ const SignUp = () => {
                     placeholder="Lastname"
                     required
                     value={lastName}
-                    onChange={e=>setLastName(e.target.value)}
+                    onChange={e => setLastName(e.target.value)}
                   />
                 </div>
                 <div>
@@ -149,7 +152,7 @@ const SignUp = () => {
                     placeholder="name@company.com"
                     required
                     value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </div>
                 <div>
@@ -167,7 +170,7 @@ const SignUp = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                     required
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </div>
                 <button
