@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import Header from './components/Header'
-import {BrowserRouter ,Routes, Route} from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,25 +15,20 @@ import SignUp from "./pages/SignUp"
 import PageNotFound from "./pages/PageNotFound"
 
 const App = () => {
-
-  const [user, setUser] = useState([])  // to store the logged in user
-  // const [user, setUser] = useState()  // to store the logged in user
-
+  const { user, setUser } = useContext(UserContext)
   return (
-    <BrowserRouter>
-    <UserContext.Provider value={{user, setUser}} >
-      <Header/>
+    <>
+      <Header />
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/signup' element={<SignUp/>}/>
-        <Route path='/signin' element={<SignIn/>}/>
-        <Route path='*' element={<PageNotFound/>}/>
+        <Route path='/' element={user ? <Home /> : <Navigate to="/signup" />} />
+        <Route path='/signup' element={!user ? <SignUp /> : <Navigate to="/" />} />
+        <Route path='/signin' element={!user ? <SignIn /> : <Navigate to="/" />} />
+        <Route path='*' element={user ? <PageNotFound /> : <Navigate to="/" />} />
       </Routes>
       {/* <CreateTodoForm/>
       <TodosList/> */}
-      <ToastContainer/>
-    </UserContext.Provider>
-    </BrowserRouter>
+      <ToastContainer />
+    </>
   )
 }
 
