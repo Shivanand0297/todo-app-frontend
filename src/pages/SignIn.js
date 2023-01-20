@@ -21,7 +21,9 @@ const SignIn = () => {
         password: password
       }
       console.log(email)
-      const response = await axios.post("http://127.0.0.1:4000/api/login", userData)
+      const response = await axios.post("http://127.0.0.1:4000/api/login", userData, {
+        credentials: 'include'
+      })
       const data = await response.data
       const loggedInEmail = data.user.email
       const userId = data.user._id
