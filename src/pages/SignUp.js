@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { UserContext } from '../context/UserContext'
 
@@ -12,7 +12,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("")
 
   const { user, setUser } = useContext(UserContext)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const setData = async () => {
 
@@ -23,7 +23,7 @@ const SignUp = () => {
         email: email,
         password: password
       }
-      const response = await axios.post("http://127.0.0.1:4000/api/register", userData)
+      const response = await axios.post("/api/register", userData)
       const data = await response.data
       const loggedInEmail = data.user.email
       const userId = data.user._id
@@ -36,7 +36,7 @@ const SignUp = () => {
           position: "bottom-center"
         })
         setTimeout(() => {
-          return navigate('/signin')
+          redirect('/signin/')
         }, 1000)
       } else {
         toast(data.message, {
