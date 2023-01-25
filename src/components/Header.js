@@ -20,16 +20,16 @@ const Header = () => {
     }
   }
 
-  const handleLogout = async () =>{
+  const handleLogout = async () => {
     try {
       setUser(null)
-      const {data} = await axios.get(`http://127.0.0.1:4000/api/logout`)
+      const { data } = await axios.get(`/api/logout`)
       console.log(data);
       toast(data.message, {
         type: "success",
         position: "bottom-center"
       })
-      
+
     } catch (error) {
       console.log(error.message);
     }

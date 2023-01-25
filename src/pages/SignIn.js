@@ -11,17 +11,15 @@ const SignIn = () => {
 
   const { user, setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  console.log(useContext(UserContext));
 
   const setData = async () => {
-
     try {
       const userData = {
         email: email,
         password: password
       }
       console.log(email)
-      const response = await axios.post("http://127.0.0.1:4000/api/login", userData, {
+      const response = await axios.post("/api/login", userData, {
         credentials: 'include'
       })
       const data = await response.data
